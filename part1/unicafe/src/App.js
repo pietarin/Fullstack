@@ -7,21 +7,38 @@ const Button = (props) => (
 )
 
 const App = () => {
-  // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const [total, setTotal] = useState(0)
+  const [average, setAverage] = useState(0)
+  const [positive, setPositive] = useState(0)
 
   const handleGoodClick = () => {
-    setGood(good + 1)
+    const updatedGood = good + 1
+    setGood(updatedGood)
+    setTotal(updatedGood + neutral + bad)
+    const updatedTotal = (updatedGood + neutral + bad)
+    setAverage((updatedGood - bad) / updatedTotal)
+    setPositive(updatedGood / updatedTotal)
   }
 
   const handleNeutralClick = () => {
-    setNeutral(neutral + 1)
+    const updatedNeutral = neutral + 1
+    setNeutral(updatedNeutral)
+    setTotal(updatedNeutral + good + bad)
+    const updatedTotal = (updatedNeutral + good + bad)
+    setAverage((good - bad) / updatedTotal)
+    setPositive(good / updatedTotal)
   }
 
   const handleBadClick = () => {
-    setBad(bad + 1)
+    const updatedBad = bad + 1
+    setBad(updatedBad)
+    setTotal(updatedBad + neutral + good)
+    const updatedTotal = (updatedBad + neutral + good)
+    setAverage((good - updatedBad) / updatedTotal)
+    setPositive(good / updatedTotal)
   }
 
   return (
@@ -32,13 +49,22 @@ const App = () => {
       <Button handleClick={() => handleBadClick()} text="Bad" />
       <h2>Statistics</h2>
       <p>
-        good {good}
+        Good {good}
       </p>
       <p>
-        neutral {neutral}
+        Neutral {neutral}
       </p>
       <p>
-        bad {bad}
+        Bad {bad}
+      </p>
+      <p>
+        All {total}
+      </p>
+      <p>
+        Average {average}
+      </p>
+      <p>
+        Positive {positive}
       </p>
     </div>
   )
