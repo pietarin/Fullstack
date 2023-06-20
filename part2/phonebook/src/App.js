@@ -39,6 +39,23 @@ const App = () => {
     }
   }
 
+  const deletePerson = id => {
+    const personToDelete = persons.find(person => person.id === id)
+    if (window.confirm(`Delete '${personToDelete.name}'?`)){
+      personsService
+      .remove(personToDelete.id)
+      .then(setPersons(persons.filter(person => person.id !== id)))
+      .catch(error => {
+        alert(
+          `the person '${personToDelete.name}' was already deleted from server`
+        )
+        console.log(error)
+      }) 
+    } else {
+      console.log("Deletion cancelled.")
+    }
+  }
+
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -59,7 +76,7 @@ const App = () => {
 
   const personsToShow = showAll
     ? persons
-    : persons.filter(person => person.name.toLowerCase().includes(filter))
+    : persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
 
   return (
     <div>
@@ -68,7 +85,7 @@ const App = () => {
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <PersonsToShow personsToShow={personsToShow} />
+      <PersonsToShow personsToShow={personsToShow} deletePerson={deletePerson}/>
     </div>
   )
 }
