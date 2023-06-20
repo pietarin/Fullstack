@@ -35,7 +35,26 @@ const App = () => {
         setNewNumber('')
       })
     } else {
-      alert(`${newName} is already added to phonebook`)
+      if (window.confirm(`'${newName}' is already added to phonebook, replace the old number with a new one?`)) {
+        const personToUpdate = persons.find(person => person.name === newName) 
+        setNewNumber(newNumber)
+        personsService
+          .update(personToUpdate.id, personObject)
+          .then(updatedPerson => {
+            setPersons(persons.map(person => person.id !== updatedPerson.id ? person : updatedPerson))
+            setNewName('')
+            setNewNumber('')
+          }
+          )
+          .catch(error => {
+            alert(
+              `'${newName}' number could not be changed.`
+            )
+            console.log(error)
+          })
+      }else {
+        console.log("Number change cancelled.")
+      }
     }
   }
 
@@ -43,14 +62,14 @@ const App = () => {
     const personToDelete = persons.find(person => person.id === id)
     if (window.confirm(`Delete '${personToDelete.name}'?`)){
       personsService
-      .remove(personToDelete.id)
-      .then(setPersons(persons.filter(person => person.id !== id)))
-      .catch(error => {
-        alert(
-          `the person '${personToDelete.name}' was already deleted from server`
-        )
-        console.log(error)
-      }) 
+        .remove(personToDelete.id)
+        .then(setPersons(persons.filter(person => person.id !== id)))
+        .catch(error => {
+          alert(
+            `the person '${personToDelete.name}' was already deleted from server`
+          )
+          console.log(error)
+        }) 
     } else {
       console.log("Deletion cancelled.")
     }
