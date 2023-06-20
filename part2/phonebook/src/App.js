@@ -4,6 +4,7 @@ import PersonForm from './components/PersonForm'
 import PersonsToShow from './components/PersonsToShow'
 import personsService from './services/Persons'
 import Notification from './components/Notification'
+import ErrorMessage from './components/ErrorMessage'
 import './index.css'
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
   const [filter, setFilter] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() =>{
     personsService
@@ -58,7 +60,10 @@ const App = () => {
           }
           )
           .catch(error => {
-            setMessage(`'${newName}' number could not be changed.`)
+            setErrorMessage(`'${newName}' number could not be changed.`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
             console.log(error)
           })
       }else {
@@ -80,7 +85,10 @@ const App = () => {
           }, 5000)
           ))
         .catch(error => {
-          setMessage(`the person '${personToDelete.name}' was already deleted from server`)
+          setErrorMessage(`the person '${personToDelete.name}' was already deleted from server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
           console.log(error)
         }) 
     } else {
@@ -114,6 +122,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={message} />
+      <ErrorMessage errorMessage={errorMessage} />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
