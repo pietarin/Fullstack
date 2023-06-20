@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
-import Persons from './components/Persons'
+import PersonsToShow from './components/PersonsToShow'
+import personsService from './services/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -12,10 +12,10 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
 
   useEffect(() =>{
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    personsService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -27,10 +27,10 @@ const App = () => {
     }
     const isDuplicate = persons.find(person => person.name === newName)
     if (isDuplicate === undefined) {
-      axios
-      .post('http://localhost:3001/persons', personObject)
-      .then(response => {
-        setPersons(persons.concat(response.data))
+      personsService
+      .create(personObject)
+      .then(returnedPerson  => {
+        setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
       })
@@ -68,7 +68,7 @@ const App = () => {
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <PersonsToShow personsToShow={personsToShow} />
     </div>
   )
 }
