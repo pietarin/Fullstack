@@ -97,7 +97,7 @@ const App = () => {
               </li>
           )}
         </ul>
-        <img alt="The flag of Switzerland is square shaped. It features a white Swiss cross centered on a red field." src={countriesFound[0].flags.png}/>
+        <img alt={countriesFound[0].flags.alt} src={countriesFound[0].flags.png}/>
       </>
     )
   }
