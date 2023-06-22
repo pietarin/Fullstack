@@ -87,12 +87,12 @@ const App = () => {
           <h3>languages:</h3>
           <ul>
             {languages(selectedCountry.languages).map(language =>
-                <li key={language}>
-                  {language}
-                </li>
+              <li key={language}>
+                {language}
+              </li>
             )}
           </ul>
-          <img alt={selectedCountry.flags.alt} src={selectedCountry.flags.png}/>
+          <img alt={selectedCountry.flags.alt} src={selectedCountry.flags.png} />
         </>
       )
     } else {
@@ -101,8 +101,7 @@ const App = () => {
           <form>
             find countries <input value={value} onChange={handleChange} />
           </form>
-          <CountryList countriesFound={countriesFound} handleShowClick={handleShowClick}/>
-          {/*<button key={country.name.common} onClick={showCountry(country)}>show</button>*/}
+          <CountryList countriesFound={countriesFound} handleShowClick={handleShowClick} />
         </>
       )
     }
@@ -119,12 +118,12 @@ const App = () => {
         <h3>languages:</h3>
         <ul>
           {languages(countriesFound[0].languages).map(language =>
-              <li key={language}>
-                {language}
-              </li>
+            <li key={language}>
+              {language}
+            </li>
           )}
         </ul>
-        <img alt={countriesFound[0].flags.alt} src={countriesFound[0].flags.png}/>
+        <img alt={countriesFound[0].flags.alt} src={countriesFound[0].flags.png} />
       </>
     )
   }
