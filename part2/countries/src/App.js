@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-
+import CountryList from './components/CountryList'
 
 const App = () => {
   const [value, setValue] = useState('')
   const [countries, setCountries] = useState(null)
   const [countryToFind, setCountryToFind] = useState('')
   const [countriesFound, setCountriesFound] = useState(null)
+  const [selectedCountry, setSelectedCountry] = useState(null)
 
   useEffect(() => {
+    setSelectedCountry(null)
     console.log('effect run, countryToFind is now', countryToFind)
     if (countryToFind) {
       console.log('fetching countries...')
@@ -50,6 +52,10 @@ const App = () => {
     )
   }
 
+  const handleShowClick = (country) => {
+    setSelectedCountry(country)
+  }
+
   if (countriesFound === null) {
     return (
       <>
@@ -68,17 +74,38 @@ const App = () => {
       </>
     )
   } else if (countriesFound.length <= 10 && countriesFound.length > 1) {
-    return (
-      <>
-        <form>
-          find countries <input value={value} onChange={handleChange} />
-        </form>
-        {countriesFound.map(country =>
-          <p key={country.name.common}>{country.name.common}</p>
-        )
-        }
-      </>
-    )
+    if (selectedCountry) {
+      return (
+        <>
+          <form>
+            find countries <input value={value} onChange={handleChange} />
+          </form>
+          <h1>{selectedCountry.name.common}</h1>
+          capital {selectedCountry.capital}
+          <br />
+          area {selectedCountry.area}
+          <h3>languages:</h3>
+          <ul>
+            {languages(selectedCountry.languages).map(language =>
+                <li key={language}>
+                  {language}
+                </li>
+            )}
+          </ul>
+          <img alt={selectedCountry.flags.alt} src={selectedCountry.flags.png}/>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <form>
+            find countries <input value={value} onChange={handleChange} />
+          </form>
+          <CountryList countriesFound={countriesFound} handleShowClick={handleShowClick}/>
+          {/*<button key={country.name.common} onClick={showCountry(country)}>show</button>*/}
+        </>
+      )
+    }
   } else {
     return (
       <>
