@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import CountryList from './components/CountryList'
+import CapitalWeather from './components/CapitalWeather'
 
 const App = () => {
   const [value, setValue] = useState('')
@@ -93,6 +94,7 @@ const App = () => {
             )}
           </ul>
           <img alt={selectedCountry.flags.alt} src={selectedCountry.flags.png} />
+          <CapitalWeather selectedCountry={selectedCountry}/>
         </>
       )
     } else {
@@ -124,6 +126,7 @@ const App = () => {
           )}
         </ul>
         <img alt={countriesFound[0].flags.alt} src={countriesFound[0].flags.png} />
+        <CapitalWeather selectedCountry={countriesFound[0]}/>
       </>
     )
   }
